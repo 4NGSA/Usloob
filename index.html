@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usloob | أسلوب — by Ertwa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a2930; --dark:#25323b; --darker:#1e2d35;
+  --gr:#28b58f; --grd:#1d8a6c; --grl:#5dd4b0;
+  --gold:#f4b942; --red:#ff6b6b; --purple:#9b7fe8;
+  --white:#e8f5f0; --gray:#7aA090;
+  --border:rgba(40,181,143,0.2); --card:rgba(37,50,59,0.7);
+  --fd:'Cairo',sans-serif; --fb:'Tajawal',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);overflow-x:hidden;position:relative;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 55% at 15% 0%,rgba(40,181,143,.1) 0%,transparent 60%),
+             radial-gradient(ellipse 55% 45% at 85% 100%,rgba(244,185,66,.06) 0%,transparent 55%);
+  pointer-events:none;z-index:0;}
+.grid-bg{position:fixed;inset:0;
+  background-image:linear-gradient(rgba(40,181,143,.04) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(40,181,143,.04) 1px,transparent 1px);
+  background-size:58px 58px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;
+  padding:2rem 1.25rem;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.screen{display:none;width:100%;}
+.screen.active{display:flex;flex-direction:column;align-items:center;animation:fu .45s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── LOGO */
+.site-logo{display:block;height:48px;width:auto;margin-bottom:1.75rem;opacity:0.92;}
+
+/* ── WELCOME */
+.logo{font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.35em;
+  color:var(--gr);text-transform:uppercase;margin-bottom:.4rem;opacity:.75;}
+.by-ertwa{font-family:var(--fd);font-size:11px;letter-spacing:.2em;
+  color:var(--gray);opacity:.55;margin-bottom:1.75rem;text-transform:uppercase;}
+.badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(40,181,143,.1);border:1px solid rgba(40,181,143,.28);
+  border-radius:100px;padding:5px 16px;font-size:12px;color:var(--gr);margin-bottom:1.5rem;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gr);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+h1.hero{font-family:var(--fd);font-size:clamp(28px,5.5vw,48px);font-weight:900;
+  line-height:1.18;text-align:center;margin-bottom:1rem;}
+h1.hero em{font-style:normal;color:var(--gr);}
+.hero-desc{font-size:15px;color:var(--gray);text-align:center;line-height:1.85;
+  max-width:460px;margin-bottom:2rem;}
+.feat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-bottom:2rem;}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 12px;text-align:center;backdrop-filter:blur(6px);}
+.feat .ic{font-size:24px;margin-bottom:6px;display:block;}
+.feat strong{display:block;font-size:13px;color:var(--white);font-weight:600;margin-bottom:3px;}
+.feat p{font-size:12px;color:var(--gray);line-height:1.5;}
+.btn-go{background:linear-gradient(135deg,var(--gr),var(--grd));color:var(--darker);
+  border:none;border-radius:13px;padding:15px 46px;font-size:16px;font-weight:900;
+  font-family:var(--fb);cursor:pointer;transition:all .2s;}
+.btn-go:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(40,181,143,.3);}
+
+/* ── PHASE BANNER */
+.phase-banner{width:100%;display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;}
+.phase-pill{display:inline-flex;align-items:center;gap:6px;
+  border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;
+  font-family:var(--fd);letter-spacing:.08em;white-space:nowrap;}
+.phase-pill.vibe{background:rgba(155,127,232,.15);border:1px solid rgba(155,127,232,.35);color:var(--purple);}
+.phase-pill.learn{background:rgba(40,181,143,.12);border:1px solid rgba(40,181,143,.3);color:var(--gr);}
+.phase-line{flex:1;height:1px;background:rgba(255,255,255,.06);}
+
+/* ── PROGRESS */
+.prog-wrap{width:100%;display:flex;align-items:center;gap:12px;margin-bottom:2rem;}
+.prog-track{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gr),var(--gold));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.q-num{font-size:12px;color:var(--gr);font-weight:700;white-space:nowrap;font-family:var(--fd);}
+.q-cat{font-size:11px;color:var(--gray);text-align:center;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;font-family:var(--fd);}
+.q-text{font-family:var(--fd);font-size:clamp(17px,3vw,23px);font-weight:700;
+  text-align:center;line-height:1.55;margin-bottom:2rem;color:var(--white);max-width:540px;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:560px;}
+.opt{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 14px;font-size:14px;color:var(--white);cursor:pointer;
+  text-align:center;font-family:var(--fb);line-height:1.5;
+  transition:all .18s;backdrop-filter:blur(6px);position:relative;overflow:hidden;}
+.opt .oi{font-size:22px;display:block;margin-bottom:7px;}
+.opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(40,181,143,.14),transparent);opacity:0;transition:opacity .18s;}
+.opt:hover{border-color:var(--gr);transform:translateY(-2px);}
+.opt:hover::before{opacity:1;}
+.opt.sel{border-color:var(--gr);background:rgba(40,181,143,.13);transform:scale(.98);}
+.opt.vibe-opt:hover{border-color:var(--purple);}
+.opt.vibe-opt::before{background:linear-gradient(135deg,rgba(155,127,232,.14),transparent);}
+.opt.vibe-opt.sel{border-color:var(--purple);background:rgba(155,127,232,.12);}
+
+/* ── RESULTS */
+.res-hero{text-align:center;margin-bottom:1.5rem;}
+.res-hero h2{font-family:var(--fd);font-size:clamp(22px,4.5vw,32px);font-weight:900;margin-bottom:.4rem;}
+.res-hero p{font-size:14px;color:var(--gray);}
+.vid-section{width:100%;margin-bottom:1.5rem;}
+.section-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+.section-hdr .lbl{font-family:var(--fd);font-size:13px;font-weight:700;white-space:nowrap;}
+.section-hdr .lbl.purple{color:var(--purple);}
+.section-hdr .lbl.green{color:var(--gr);}
+.section-hdr hr{flex:1;border:none;border-top:1px solid rgba(255,255,255,.06);}
+.vid-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vid-card{background:var(--card);border:1px solid rgba(155,127,232,.2);border-radius:16px;
+  padding:14px;position:relative;overflow:hidden;transition:transform .18s;}
+.vid-card:hover{transform:translateY(-2px);}
+.vid-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(155,127,232,.08),transparent);pointer-events:none;}
+.vid-thumb{font-size:32px;display:block;margin-bottom:8px;line-height:1;}
+.vid-title{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;line-height:1.4;}
+.vid-why{font-size:11px;color:rgba(155,127,232,.8);margin-bottom:8px;line-height:1.4;}
+.vid-link{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(155,127,232,.15);border:1px solid rgba(155,127,232,.3);
+  border-radius:8px;padding:4px 10px;font-size:11px;color:var(--purple);
+  font-family:var(--fd);font-weight:700;text-decoration:none;}
+.vid-link:hover{background:rgba(155,127,232,.25);}
+.match-badge{position:absolute;top:10px;left:10px;
+  background:rgba(155,127,232,.2);border:1px solid rgba(155,127,232,.35);
+  border-radius:6px;padding:2px 7px;font-size:10px;color:var(--purple);
+  font-family:var(--fd);font-weight:700;}
+.top-card{width:100%;
+  background:linear-gradient(135deg,rgba(40,181,143,.14),rgba(40,181,143,.05));
+  border:1px solid rgba(40,181,143,.38);border-radius:18px;
+  padding:22px;margin-bottom:1.25rem;position:relative;overflow:hidden;}
+.top-card::before{content:'';position:absolute;top:-28px;left:-28px;
+  width:110px;height:110px;border-radius:50%;background:rgba(40,181,143,.07);}
+.top-tag{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(40,181,143,.18);border:1px solid rgba(40,181,143,.38);
+  border-radius:100px;padding:3px 12px;font-size:10px;color:var(--gr);
+  letter-spacing:.1em;font-weight:700;margin-bottom:10px;font-family:var(--fd);}
+.top-name{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--white);
+  margin-bottom:5px;display:flex;align-items:center;gap:10px;}
+.top-name .ic{font-size:26px;}
+.top-desc{font-size:13px;color:#a8d0c4;line-height:1.75;}
+.bars{width:100%;margin-bottom:1.25rem;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.bar-lbl{font-size:12px;color:var(--gray);min-width:118px;text-align:right;}
+.bar-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.bar-v{width:0;height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.bar-pct{font-size:11px;color:var(--gr);font-weight:700;min-width:30px;text-align:left;font-family:var(--fd);}
+.tips{width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:20px;margin-bottom:1.25rem;backdrop-filter:blur(6px);}
+.tips h3{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--gr);
+  margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.tip-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.tip-n{width:22px;height:22px;border-radius:7px;
+  background:rgba(40,181,143,.14);border:1px solid rgba(40,181,143,.28);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;color:var(--gr);font-weight:700;flex-shrink:0;
+  margin-top:1px;font-family:var(--fd);}
+.tip-t{font-size:13px;color:#b8d8d0;line-height:1.75;}
+.btn-sec{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;padding:11px 30px;font-size:13px;font-family:var(--fb);
+  cursor:pointer;transition:all .18s;margin-top:.25rem;}
+.btn-sec:hover{border-color:var(--gr);color:var(--gr);}
+
+@media(max-width:480px){
+  .feat-row{grid-template-columns:1fr;}
+  .opts{grid-template-columns:1fr;}
+  .vid-grid{grid-template-columns:1fr;}
+  .bar-lbl{min-width:88px;font-size:11px;}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="wrap">
+
+<!-- WELCOME -->
+<div id="welcome" class="screen active">
+  <!-- LOGO: replace logo.png with your actual logo filename, both files must be in the same folder -->
+  <img src="logo.png" alt="Usloob" class="site-logo" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='block'">
+  <div id="logo-fallback" class="logo" style="display:none">Usloob · أسلوب</div>
+  <h1 class="hero">اكتشف<br><em>أسلوبك</em></h1>
+  <p class="hero-desc">سؤالين من نوعين: أسئلة عن اهتماماتك تعطيك فيديوهات مذاكرة مخصصة لك، وأسئلة عن طريقة تفكيرك تكشف أسلوبك الأمثل في التعلم.</p>
+  <div class="feat-row">
+    <div class="feat"><span class="ic">🎬</span><strong>فيديوهات مخصصة</strong><p>توصيات بحسب اهتماماتك وشخصيتك</p></div>
+    <div class="feat"><span class="ic">🧬</span><strong>8 أنواع ذكاء</strong><p>مبنية على نظرية هوارد غاردنر</p></div>
+    <div class="feat"><span class="ic">⏱️</span><strong>5 دقائق</strong><p>أسئلة مدروسة ونتائج دقيقة</p></div>
+  </div>
+  <button class="btn-go" onclick="goQuiz()">ابدأ الاختبار ←</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="phase-banner">
+    <div class="phase-pill" id="phase-pill">🎬 اهتماماتك</div>
+    <div class="phase-line"></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
+    <div class="q-num" id="qnum">1 / 12</div>
+  </div>
+  <div class="q-cat" id="qcat"></div>
+  <div class="q-text" id="qtext"></div>
+  <div class="opts" id="opts"></div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="res-hero">
+    <h2>✨ نتيجتك الكاملة</h2>
+    <p>فيديوهات مخصصة لك + أسلوب التعلم الافضل لك</p>
+  </div>
+
+  <div class="vid-section">
+    <div class="section-hdr">
+      <div class="lbl purple">🎬 فيديوهات المذاكرة المقترحة لك</div>
+      <hr>
+    </div>
+    <div class="vid-grid" id="vids"></div>
+  </div>
+
+  <div class="section-hdr">
+    <div class="lbl green">🧠 أسلوب تعلمك</div>
+    <hr>
+  </div>
+  <div class="top-card" id="top-card"></div>
+  <div class="bars" id="bars"></div>
+  <div class="tips" id="tips"></div>
+  <button class="btn-sec" onclick="restart()">↺ أعد الاختبار</button>
+</div>
+
+</div>
+<script>
+const VIBE_Qs = [
+  {
+    cat: "الأجواء",
+    text: "هل تحب هاري بوتر وأجواء Hogwarts?",
+    opts: [
+      { ic:"⚡", t:"أيوه، من اكبر المعجبين!", tags:["hp","fantasy","aesthetic"] },
+      { ic:"🪄", t:"شفته بس ما افضله..", tags:["fantasy","aesthetic"] },
+      { ic:"📚", t:"ما شفته بس أحب الخيال", tags:["fantasy"] },
+      { ic:"🚫", t:"لا، مو جوي أبد", tags:[] }
+    ]
+  },
+  {
+    cat: "الأجواء",
+    text: "أيش الاجواء اللي تحب تذاكر فيها؟",
+    opts: [
+      { ic:"☕", t:"كافيه هادي مع موسيقى lo-fi", tags:["lofi","cafe","chill"] },
+      { ic:"🌧️", t:"مطر وشموع في البيت", tags:["rain","cozy","aesthetic"] },
+      { ic:"🏙️", t:"أجواء المدينة والاماكن اللي فيها حركة دايما", tags:["city","energetic"] },
+      { ic:"🌲", t:"في الطبيعة او في هدوء تام", tags:["nature","chill"] }
+    ]
+  },
+  {
+    cat: "الموسيقى",
+    text: "إيش تسمع وأنت تذاكر؟",
+    opts: [
+      { ic:"🎧", t:"Lo-fi hip hop وموسيقى هادئة", tags:["lofi","chill"] },
+      { ic:"🎻", t:"موسيقى كلاسيكية أو جاز", tags:["classical","cinematic"] },
+      { ic:"🤫", t:"صمت تام، ما أقدر اذاكر بالموسيقى", tags:["silent","focus"] },
+      { ic:"🎸", t:"موسيقى energetic او عالية زي الفونك", tags:["energetic","beats"] }
+    ]
+  },
+  {
+    cat: "الاهتمامات",
+    text: "هل تحب الأنمي او الثقافة اليابانية؟",
+    opts: [
+      { ic:"⛩️", t:"أيوه محب أنمي من زمان!", tags:["anime","japanese","aesthetic"] },
+      { ic:"🌸", t:"اتفرج شوي بس مو دايم", tags:["anime"] },
+      { ic:"🌍", t:"لا، تعجبني ثقافات غيرها أكثر", tags:["chill"] },
+      { ic:"😌", t:"ما تهمني الثقافة قد الأجواء", tags:["chill","lofi"] }
+    ]
+  },
+  {
+    cat: "الاهتمامات",
+    text: "كيف أجواء دراستك المثالية من ناحية الإضاءة؟",
+    opts: [
+      { ic:"🕯️", t:"ضوء شموع أو نور دافئ اصفر", tags:["cozy","aesthetic","rain"] },
+      { ic:"☀️", t:"إضاءة طبيعية من الشباك", tags:["nature","chill"] },
+      { ic:"💡", t:"إضاءة بيضاء واضحة", tags:["focus","silent"] },
+      { ic:"🌙", t:"أذاكر في الليل مع إضاءة خافتة", tags:["lofi","night","aesthetic"] }
+    ]
+  },
+];
+
+const LEARN_Qs = [
+  {cat:"طريقة الاستيعاب",text:"لما تتعلم مهارة جديدة، ايش اللي يثبت المعلومة في ذاكرتك أكثر؟",opts:[
+    {ic:"📖",t:"أقرأ وأكتب ملاحظاتي بأسلوبي",s:{linguistic:3}},
+    {ic:"📊",t:"أفهم المنطق والسبب والنتيجة",s:{logical:3}},
+    {ic:"🎬",t:"اتفرج فيديو أو أرسم مخطط",s:{spatial:3}},
+    {ic:"🤸",t:"اجرب اللي اتعلمه بيدي",s:{bodily:3}}
+  ]},
+  {cat:"بيئة المذاكرة",text:"ايش البيئة اللي تحس عقلك يشتغل بكل اللي عنده فيها؟",opts:[
+    {ic:"🔇",t:"صمت تام بدون أي ازعاج ابداً",s:{intrapersonal:3}},
+    {ic:"🎵",t:"موسيقى هادية في الخلفية",s:{musical:3}},
+    {ic:"👥",t:"يوم يكون فيه ناس حولي",s:{interpersonal:3}},
+    {ic:"🌿",t:"مكان مفتوح أو طبيعة زي حديقة",s:{naturalist:3}}
+  ]},
+  {cat:"الذاكرة والحفظ",text:"أيش أسلوب يخليك تتذكر معلومة بعد شهر كامل؟",opts:[
+    {ic:"🎤",t:"أشرحها لشخص ثاني أو أسجل نفسي",s:{interpersonal:2,linguistic:2}},
+    {ic:"🎵",t:"أربطها بلحن أو اغنية",s:{musical:3}},
+    {ic:"🖼️",t:"احط صور وألوان لها",s:{spatial:3}},
+    {ic:"🚶",t:"أتحرك وأمشي وانا اراجعها",s:{bodily:3}}
+  ]},
+  {cat:"نوع التفكير",text:"أيش نوع التحديات اللي تنجذب لها طبيعياً؟",opts:[
+    {ic:"🔢",t:"الأرقام والمعادلات والألغاز المنطقية",s:{logical:3}},
+    {ic:"🎼",t:"الإيقاع والأصوات والأنماط الموسيقية",s:{musical:3}},
+    {ic:"🌍",t:"أنماط الطبيعة وتصنيف الكائنات",s:{naturalist:3}},
+    {ic:"💬",t:"اللغة والتعبير والتأثير بالكلمات",s:{linguistic:3}}
+  ]},
+  {cat:"الدراسة الجماعية",text:"في قروب دراسة، أيش الدور اللي تمسكه تلقائياً؟",opts:[
+    {ic:"📋",t:"أشرح وأوضح المادة للقروب",s:{linguistic:2,interpersonal:1}},
+    {ic:"🎨",t:"أرسم الملخصات والمخططات البصرية",s:{spatial:3}},
+    {ic:"🧮",t:"أحل التمارين وأتأكد من الإجابات",s:{logical:3}},
+    {ic:"💭",t:"أفضل اني ادرس لحالي",s:{intrapersonal:3}}
+  ]},
+  {cat:"مصدر الثقة",text:"ايش الإنجاز اللي يحسسك بأكبر قدر من الفخر؟",opts:[
+    {ic:"✏️",t:"لو شي كتبته أثر في شخص تأثير ملموس",s:{linguistic:3}},
+    {ic:"🏃",t:"اني اتقن مهارة جسدية بعد جهد كبير",s:{bodily:3}},
+    {ic:"🤲",t:"مساعدة احد في انه يتخطى مشكلة صعبة",s:{interpersonal:3}},
+    {ic:"💡",t:"حل مسألة معقدة ما حلها احد غيري",s:{logical:3}}
+  ]},
+  {cat:"الشخصية والدوافع",text:"ايش اقرب جملة لعلاقتك بالتعلم؟",opts:[
+    {ic:"🔭",t:"أتعلم بعمق لما أربط الموضوع بالطبيعة",s:{naturalist:3}},
+    {ic:"🎯",t:"أتعلم بكل حب لما اربطه بأهدافي الشخصية",s:{intrapersonal:3}},
+    {ic:"🏆",t:"أتعلم اكثر لما احس بالمنافسة والإنجاز",s:{interpersonal:2,bodily:1}},
+    {ic:"🎶",t:"أتعلم بسهولة لما المادة ترتبط بالموسيقى",s:{musical:3}}
+  ]},
+];
+
+const VIDEOS = [
+  { id:"hp_study",    thumb:"⚡", title:"Study at Hogwarts - Harry Potter Ambience",    why:"أجواء هوغورتس المشعلة للشموع مع موسيقى الفيلم",      search:"study with me hogwarts",            tags:["hp","fantasy","aesthetic","cozy"],              weight:0 },
+  { id:"lofi_girl",   thumb:"🎧", title:"Lofi Hip Hop - Beats to Relax/Study To",       why:"الكلاسيكي الأكثر مشاهدة للمذاكرة اللطيفة",          search:"lofi hip hop study beats",          tags:["lofi","chill","cafe","night"],                  weight:0 },
+  { id:"rain_cafe",   thumb:"☕", title:"Rainy Cafe Ambience - Jazz & Rain Sounds",     why:"أصوات المطر مع موسيقى الجاز في كافيه مريح",         search:"rainy cafe ambience study",         tags:["rain","cafe","cozy","chill","aesthetic"],       weight:0 },
+  { id:"anime_study", thumb:"⛩️", title:"Study with Me - Anime Lo-fi Aesthetic",        why:"أجواء أنمي يابانية مع موسيقى lo-fi هادئة",          search:"anime lofi study with me",          tags:["anime","japanese","lofi","aesthetic","night"],  weight:0 },
+  { id:"classical",   thumb:"🎻", title:"Mozart & Bach - Classical Music for Focus",    why:"الموسيقى الكلاسيكية المثبتة علمياً لتعزيز التركيز", search:"classical music study focus mozart", tags:["classical","cinematic","focus","silent"],       weight:0 },
+  { id:"forest",      thumb:"🌲", title:"Deep Forest Study - Nature Sounds & Piano",    why:"أصوات الطبيعة مع بيانو هادئ للدراسة في السكون",     search:"forest nature sounds study piano",   tags:["nature","chill","silent"],                     weight:0 },
+  { id:"city_night",  thumb:"🏙️", title:"City Night Vibes - Urban Lo-fi Chill",         why:"أجواء المدينة الليلية مع موسيقى تعطيك طاقة",        search:"city night lofi study vibes",        tags:["city","night","energetic","lofi"],              weight:0 },
+  { id:"dark_acad",   thumb:"🕯️", title:"Dark Academia Aesthetic - Study Ambience",     why:"أجواء الدراسة الكلاسيكية الداكنة مع الشموع والكتب", search:"dark academia study ambience",       tags:["aesthetic","cozy","fantasy","classical","hp"],  weight:0 },
+  { id:"pomodoro",    thumb:"⏱️", title:"2-Hour Deep Focus - Pomodoro Study Session",   why:"جلسة تركيز بتقنية البومودورو مع تنبيهات الاستراحة", search:"pomodoro study session 2 hours",     tags:["focus","silent","energetic","beats"],           weight:0 },
+  { id:"japanese",    thumb:"🌸", title:"Japanese Study Cafe - Tokyo Ambience",         why:"أجواء مقهى ياباني في طوكيو مع أصوات المدينة",       search:"japanese cafe study tokyo ambience", tags:["japanese","anime","city","aesthetic","cafe"],   weight:0 },
+];
+
+const IN={
+  linguistic:   {n:"الذكاء اللغوي",    ic:"📖", bar:"linear-gradient(90deg,#7c6fec,#a89bf0)"},
+  logical:      {n:"الذكاء المنطقي",   ic:"🔢", bar:"linear-gradient(90deg,#378add,#66b0ff)"},
+  spatial:      {n:"الذكاء البصري",    ic:"🎨", bar:"linear-gradient(90deg,#28b58f,#5dd4b0)"},
+  bodily:       {n:"الذكاء الحركي",    ic:"⚽", bar:"linear-gradient(90deg,#f4b942,#ffd47a)"},
+  musical:      {n:"الذكاء الموسيقي",  ic:"🎵", bar:"linear-gradient(90deg,#ff6b9d,#ff9dc5)"},
+  interpersonal:{n:"الذكاء الاجتماعي", ic:"👥", bar:"linear-gradient(90deg,#56cc7a,#7edda0)"},
+  intrapersonal:{n:"الذكاء الذاتي",    ic:"🧘", bar:"linear-gradient(90deg,#f07030,#ff9860)"},
+  naturalist:   {n:"الذكاء الطبيعي",   ic:"🌿", bar:"linear-gradient(90deg,#22c4a0,#5dd4b8)"}
+};
+
+const DESC={
+  linguistic:"عقلك يشتغل بالكلمات - القراءة والكتابة والتعبير هي الادوات اللي بتساعدك.",
+  logical:"عقلك يدور على الأنماط والمنطق - الأرقام والتسلسل المنطقي لغتك .",
+  spatial:"عقلك يفكر بالصور - الخرائط والاشياء البصرية والألوان تساعدك تفهم.",
+  bodily:"عقلك وجسمك يشتغلوا سوا - الحركة والشغل العملي هي الطريقة الافضل لك.",
+  musical:"عقلك يسمع اللي ما يسمعه غيرك - الإيقاعات والأنماط الصوتية تساعدك تحفظ اللي تتعلمه.",
+  interpersonal:" افضل طريقة لك هي انك تشرح المفاهيم للناس عشان ترسخ المعلومات في عقلك",
+  intrapersonal:"عقلك عميق اكثر, حاول تركز وتلاحظ متى تفهم المعلومة وكيف, ملاحظتك لنفسك هي اللي راح تفرق معاك.",
+  naturalist:"عقلك يحب الانماط - التصنيف والملاحظة الدقيقة طريقتك في التعلم."
+};
+
+const TIPS={
+  linguistic: (tags) => {
+    const cozy  = tags.includes('cozy')||tags.includes('rain')||tags.includes('aesthetic');
+    const lofi  = tags.includes('lofi')||tags.includes('cafe');
+    const focus = tags.includes('focus')||tags.includes('silent');
+    return [
+      cozy
+        ? "اكتب ملخصاتك بقلم على دفتر ورقي - الإضاءة الدافئة اللي تحبها تخلي هذي اللحظة لها طعم كأنك عالم في سنة 1800.."
+        : focus
+        ? "اكتب ملاحظاتك في Notion أو Obsidian ,قفل الجوال! - عقلك اللغوي يحتاج هدوء تام عشان يشتغل بكامل طاقته"
+        : "اكتب ملاحظاتك بأسلوبك الخاص - عيد صياغة كل فكرة بكلماتك عشان ترسخ في عقلك",
+      lofi
+        ? "سوي نفسك دكتور قاعد يعطي محاضرة, اقرأ كل شي بصوت عالي وأنت في مكانك المفضل - صوتك هو الأداة، والأجواء الهادية تضخمها "
+        : "سجل نفسك وأنت تشرح الموضوع بطريقتك - اسمع التسجيل قبل النوم، عقلك بيحفظه وأنت نايم",
+      "غير طريقة مراجعتك: اكتب سؤال على ورقة واتركها يوم، ارجع وجاوب من ذاكرتك - ما نبغا حركات اني اغطي السؤال ربع ثانية واقول ما اتذكر!",
+      "لما تواجه شي صعب، لا تحفظه - عيد صياغته بكلمتين كأنك تشرح لأحد ثاني ما درس معك"
+    ];
+  },
+  logical: (tags) => {
+    const energetic = tags.includes('energetic')||tags.includes('beats');
+    const classical = tags.includes('classical')||tags.includes('cinematic');
+    return [
+      "قبل ما تبدأ أي شابتر, ارسم خريطة ذهنية : ايش اعرفه عن الدرس, ايش العناوين الرئيسية او المواضيع, وابدأ عبي الخريطة بالمعلومات, بعدها ارجع حاول ترسمها من ذاكرتك",
+      classical
+        ? "ذاكر مع موسيقى كلاسيكية - عقلك المنطقي يحب الأنماط، والموسيقى الكلاسيكية نمط منظم يساعدك تدخل في جو المذاكرة"
+        : energetic
+        ? "قسم جلستك: ٢٥ دقيقة الى نص ساعة مذاكرة بعدها بريك، التغيير يساعدك ما تحس انك انطفيت "
+        : "لما تحل اسئلة, لا تعدي الخطأ - وقف عنده وشوف ليه اساسا غلطع فيه: ايش المبدأ اللي ما عرفته؟ بتتعلم منه ومعد بتعيده",
+      "سوي 'خريطة أخطاء' - ورقة تكتب فيها كل غلطة غلطتها وسببها. راجعها قبل الاختبار بدل ما تراجع السلايدات كلها"
+    ];
+  },
+  spatial: (tags) => {
+    const dark  = tags.includes('aesthetic')||tags.includes('cozy');
+    const night = tags.includes('night')||tags.includes('lofi');
+    return [
+      dark
+        ? "اشتري دفتر A3 واستخدمه بس للرسم المفاهيمي - كل شابتر رسمة واحدة تلخصه. حطه جمبك وانت تذاكر "
+        : "استخدم Excalidraw أو Miro لرسم كل فصل كـ mind map -الشاشة تعطيك مساحة بدون اي حدود",
+      "لكل مادة، اختار لون - مثلا أصفر للكيمياء، أزرق للفيزياء. عقلك البصري يفرز المعلومات بالألوان بدون ما تحس",
+      night
+        ? "ذاكر وأنت في الليل بإضاءة منخفضة - لكن خلي ملاحظاتك ملونة وواضحة على الشاشة، التباين المرئي يثبت المعلومة"
+        : "لو يعجبك النظام الورقي اكثر, اطبع السلايدات, ومر على كل سلايد اقل شي مرتين غضون الترم عشان تكون فاهمه زيننن",
+      "قبل أي اختبار، غمض عينك وتخيل السلايد اللي تحسه اهم واحد في عقلك -عقلك البصري يخزن صور مو كلمات، فأستغل هذي الميزة"
+    ];
+  },
+  bodily: (tags) => {
+    const nature = tags.includes('nature')||tags.includes('chill');
+    const city   = tags.includes('city')||tags.includes('energetic');
+    return [
+      nature
+        ? "خذ ايبادك او سلايداتك وروح لأقرب حديقة أو كافيه هادئ, الحركة حولك بتساعدك"
+        : city
+        ? "ذاكر على إيقاع حركة: اقرأ وأنت واقف، راجع وأنت تمشي في الغرفة - جسمك يحتاج حركة "
+        : "خصص ١٠ دقائق بعد كل ساعة مذاكرة لنشاط جسدي - لو ايش كانت الرياضة, بس عشان عقلك يسوي refresh :)",
+      "اكتب بيدك دايما حتى لو عندك لابتوب - الحركة الدقيقة للأصابع ترتبط مباشرة بالذاكرة طويلة المدى, حسب الدراسات!",
+      " استخدم الفلاش كاردز, استخدم موقع زي Remnote (افضل واحد عن خبرة), عشان تختبروا نفسكم في المعلومات النظرية",
+      "قبل الاختبار بيوم، راجع المادة وأنت تتحرك - الدراسات تثبت أن الجسم النشط يسترجع المعلومات أسرع بـ 20"
+    ];
+  },
+  musical: (tags) => {
+    const lofi     = tags.includes('lofi');
+    const classical = tags.includes('classical');
+    const anime    = tags.includes('anime');
+    return [
+      lofi
+        ? "سوي playlist خاصة بكل مادة-— lo-fi للكيمياء، jazz للتاريخ. لما تسمعها وقت المراجعة، ترجع ذاكرتك المرتبطة تلقائياً"
+        : classical
+        ? "استخدم الموسيقى الكلاسيكية اللي ذاكرت معها كـ 'trigger' قبل الاختبار - تذكر اللحن يرجع المعلومات المرتبطة فيه"
+        : anime
+        ? "موسيقى الأنمي الأوركسترالية مثل Attack on Titan أو Your Name تناسب جلسات التركيز القصوى - جربها"
+        : "اصنع playlist مخصص لكل مادة وحافظ عليه - الارتباط الصوتي بين الموسيقى والمادة يصير ذاكرة مزدوجة",
+      "سوي زي الاغنية عشان تساعد بالحفظ, بس حط عليها ايقاع وغنيها.. ادري انه غريب بس يشتغل",
+      "اقرأ بنبرة وإيقاع واضح بصوت عالي - إيقاع ثابت يساعد عقلك على الإمساك بالمعنى أسرع",
+      "اربط المعلومات بنبضات - ضربات قلم على الطاولة أثناء الحفظ. الحركة الإيقاعية ترسخ الذاكرة الحركية معها"
+    ];
+  },
+  interpersonal: (tags) => {
+    const cafe  = tags.includes('cafe')||tags.includes('city');
+    const anime = tags.includes('anime');
+    return [
+      cafe
+        ? "روح للمكتبة او كافيه مرة في الأسبوع للمذاكرة الجماعية - وجود ناس حولك يرفع طاقتك حتى لو ما كلمتهم"
+        : "نظم جلسة دراسية مشتركة على Discord أو Zoom - الكاميرا مفتوحة وكل واحد يذاكر لحاله، بس الشعور بالتواجد يفرق",
+      "اشرح للناس اللي حولك - من يُعلم يتعلم مرتين.",
+      anime
+        ? "انضم لمجموعة دراسة على Discord أو Reddit فيها ناس من اهتماماتك - الجو المشترك يخلي المذاكرة تحس إنها activity"
+        : "ابحث عن 'study buddy' واحد فقط تتواصلون كل أسبوع وتشاركون ما تعلمتموه - الالتزام قدام شخص أقوى من أي تطبيق",
+      "اسأل أسئلة بصوت عالي وكأنك تسأل الدكتور - حتى لو لحالك. صياغة السؤال تكشف إيش ما فهمته"
+    ];
+  },
+  intrapersonal: (tags) => {
+    const night = tags.includes('night')||tags.includes('lofi');
+    const focus = tags.includes('focus')||tags.includes('silent');
+    const cozy  = tags.includes('cozy')||tags.includes('rain');
+    return [
+      night
+        ? "جلساتك الليلية الهادئة هي ذهبك - لكن لا تبدأها بدون هدف مكتوب. اكتب: 'اليوم ابغا أفهم...' قبل ما تفتح أي شابتر"
+        : focus
+        ? "قبل ما تبدأ جلستك، اقعد دقيقة طالع بالجدار او بشمعة قدامك بس عشان عقلك يحس ان الحين بدأ الجد والشغل"
+        : cozy
+        ? "سوي طقوسات ثابتة لبداية المذاكرة, كوب شاي، إضاءة معينة، نفس الكرسي. طقسك الشخصي يقول لدماغك: الحين نشتغل"
+        : "اكتب في دفتر صغير ثلاثة أشياء قبل كل جلسة: ليش هذا مهم لي، وما الذي أتوقع أن أتعلمه اليوم",
+      "لا تراجع كل شيء, راجع اللي تشوف انك ضعيف فيه بس. بتكتشف انك فعلا تحسنت.",
+      cozy
+        ? "ابني بيئتك المثالية وحافظ عليها ثابتة زي ما هي, نفس الإضاءة، نفس الأجواء. العقل يتعود على الجو ويعرف متى يبدأ يركز معاك"
+        : "قبل ما تنام, اتذكر ان اهم شي هو جودة المذاكرة, مو كم ساعة قعدت تذاكر."
+    ];
+  },
+  naturalist: (tags) => {
+    const nature = tags.includes('nature')||tags.includes('chill');
+    const city   = tags.includes('city');
+    return [
+      nature
+        ? "روح لحديقة أو مكان فيه طبيعة وتقدر تركز فيه وذاكر هناك لو مرة في الأسبوع"
+        : city
+        ? "حتى لو ما تقدر تخرج، افتح شباك أو جيب لك نبتة تحسسك انك محاوط بالطبيعة دايما, التواصل مع الطبيعة ولو بصرياً ينشط الذاكرة"
+        : "اربط كل فكرة بظاهرة طبيعية تعرفها او مثال بالحقيقة, الطبيعة هي أفضل قاعدة بيانات لعقلك",
+      "صنف ملاحظاتك زي ما تصنف الحياة الواقعية: مجالات كبيرة ← فئات ← تفاصيل. هذا التسلسل الهرمي بيناسب تفكيرك تماماً",
+    ];
+  }
+};
+
+const ALL_Qs = [...VIBE_Qs, ...LEARN_Qs];
+let cur=0;
+let userTags=[];
+let sc={linguistic:0,logical:0,spatial:0,bodily:0,musical:0,interpersonal:0,intrapersonal:0,naturalist:0};
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goQuiz(){ show('quiz'); renderQ(); }
+
+function renderQ(){
+  const q=ALL_Qs[cur];
+  const total=ALL_Qs.length;
+  const isVibe=cur<VIBE_Qs.length;
+  const pill=document.getElementById('phase-pill');
+  pill.textContent=isVibe?'🎬 اهتماماتك':'🧠 أسلوب تعلمك';
+  pill.className='phase-pill '+(isVibe?'vibe':'learn');
+  document.getElementById('qnum').textContent=`${cur+1} / ${total}`;
+  document.getElementById('pbar').style.width=`${(cur/total)*100}%`;
+  document.getElementById('qcat').textContent=q.cat;
+  document.getElementById('qtext').textContent=q.text;
+  const o=document.getElementById('opts'); o.innerHTML='';
+  q.opts.forEach(op=>{
+    const b=document.createElement('button');
+    b.className='opt'+(isVibe?' vibe-opt':'');
+    b.innerHTML=`<span class="oi">${op.ic}</span>${op.t}`;
+    b.onclick=()=>answer(op,b,isVibe);
+    o.appendChild(b);
+  });
+}
+
+function answer(op, btn, isVibe){
+  document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');b.style.pointerEvents='none';});
+  btn.classList.add('sel');
+  if(isVibe){ if(op.tags) op.tags.forEach(t=>userTags.push(t)); }
+  else { if(op.s) Object.entries(op.s).forEach(([k,v])=>sc[k]+=v); }
+  setTimeout(()=>{ cur++; cur<ALL_Qs.length?renderQ():showResults(); }, 360);
+}
+
+function showResults(){
+  show('results');
+  const tagCount={};
+  userTags.forEach(t=>{ tagCount[t]=(tagCount[t]||0)+1; });
+  const scored=VIDEOS.map(v=>{
+    let w=0; v.tags.forEach(t=>{ if(tagCount[t]) w+=tagCount[t]; });
+    return{...v,weight:w};
+  }).sort((a,b)=>b.weight-a.weight);
+  const top4=scored.slice(0,4);
+  const vidsEl=document.getElementById('vids');
+  vidsEl.innerHTML='';
+  const maxW=top4[0]?.weight||1;
+  top4.forEach((v,i)=>{
+    const pct=Math.round((v.weight/maxW)*100);
+    const matchLabel=i===0?'الأنسب لك ✨':pct>=60?'مناسب جداً':pct>=30?'مناسب':'اكتشفه';
+    const ytUrl=`https://www.youtube.com/results?search_query=${encodeURIComponent(v.search)}`;
+    const card=document.createElement('div');
+    card.className='vid-card';
+    card.innerHTML=`
+      <div class="match-badge">${matchLabel}</div>
+      <span class="vid-thumb">${v.thumb}</span>
+      <div class="vid-title">${v.title}</div>
+      <div class="vid-why">${v.why}</div>
+      <a class="vid-link" href="${ytUrl}" target="_blank" rel="noopener">🔍 ابحث عنه</a>
+    `;
+    vidsEl.appendChild(card);
+  });
+  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+  const top=sorted[0][0], intel=IN[top], mx=sorted[0][1]||1;
+  document.getElementById('top-card').innerHTML=`
+    <div class="top-tag">★ ذكائك الأقوى</div>
+    <div class="top-name"><span class="ic">${intel.ic}</span>${intel.n}</div>
+    <p class="top-desc">${DESC[top]}</p>`;
+  const bars=document.getElementById('bars'); bars.innerHTML='';
+  sorted.forEach(([k,v])=>{
+    const i=IN[k], pct=Math.round((v/mx)*100);
+    const row=document.createElement('div'); row.className='bar-row';
+    row.innerHTML=`<div class="bar-lbl">${i.ic} ${i.n}</div><div class="bar-track"><div class="bar-v" style="background:${i.bar}" data-p="${pct}"></div></div><div class="bar-pct">${pct}%</div>`;
+    bars.appendChild(row);
+  });
+  setTimeout(()=>document.querySelectorAll('.bar-v').forEach(b=>b.style.width=b.dataset.p+'%'),120);
+  const tips=TIPS[top](userTags), tipsEl=document.getElementById('tips');
+  tipsEl.innerHTML=`<h3>💡 استراتيجيات ${intel.n}</h3>`+tips.map((t,i)=>`<div class="tip-row"><div class="tip-n">${i+1}</div><div class="tip-t">${t}</div></div>`).join('');
+}
+
+function restart(){
+  cur=0; userTags=[];
+  sc={linguistic:0,logical:0,spatial:0,bodily:0,musical:0,interpersonal:0,intrapersonal:0,naturalist:0};
+  show('welcome');
+}
+</script>
+</body>
+</html>
